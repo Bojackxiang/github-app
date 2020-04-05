@@ -3,7 +3,16 @@
  * 如何让topbar 滚动起来： https://blog.csdn.net/zcmain/article/details/89032175
  */
 import React, { lazy } from "react";
-import { Text, View, Button, FlatList, RefreshControl } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  FlatList,
+  RefreshControl,
+  Text,
+  View,
+  StyleSheet,
+  Alert
+} from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { useDispatch, useSelector } from "react-redux";
@@ -79,11 +88,11 @@ const Popularpage = (props) => {
 const PropularTab = (props) => {
   // 看当前用户所在的tab
   const { tabName } = props;
-  console.log("开始加载当前的tab", tabName);
   const popularState = useSelector((state) => state?.popular[tabName]);
-  console.log(popularState);
   const dispatch = useDispatch();
-
+  // 0: 隐藏footer   1: 正在加载的footer   2: 已经完成加载的footer
+  const [loadingStatus, setLoadingState] = React.useState(2)
+  
   const _genUrlName = () => {
     return `${GITHUB_URL}${tabName}${SORT_QUERY}`;
   };
@@ -101,9 +110,22 @@ const PropularTab = (props) => {
     return <PopularItem item={item}></PopularItem>;
   };
 
+  const _footerIndicator = () => (
+    <View style={styles.footerIndicator}>
+      <ActivityIndicator size="large" color="#0000ff"
+      />
+      <Text>加载更多</Text>
+    </View>
+  )
+
+  const _footerComponent = () => (
+    <View style={styles.footerIndicator}>
+      <Text>没有更多数据了</Text>
+    </View>
+  )
+
   return (
     <View>
-      {/* {popularState.data} */}
       {popularState === undefined ? (
         <Text>loading</Text>
       ) : (
@@ -113,13 +135,43 @@ const PropularTab = (props) => {
           keyExtractor={(item) => item + Math.random() * 100}
           refreshing={popularState.isLoading}
           onRefresh={() => _onLoading()}
+          // 底部组建设计
+          ListFooterComponent={() => {
+            if(loadingStatus === 0) return null // 隐藏
+            if(loadingStatus === 1) return _footerIndicator() // 显示正在加载
+            return _footerComponent() // 显示没有更多数据
+          }}
+          onEndReached={() => {
+            // 确保一定是在Onmomentunscrollbegin之后背带奥用
+            setTimeout(() => {
+              console.log('---------- flat list: on end reacher -----------')  
+            }, 1000);
+          }}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin= {() => { // 检测用户滑动event
+            console.log('----------- flat list on moment scroll begin -----------')
+          }}
         ></FlatList>
       )}
     </View>
   );
 };
 
+const styles = StyleSheet.create({
+  footerIndicator: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign:'center',
+    height: 100
+  }
+})
+
 export default Popularpage;
+
+
+
+
 
 // const TabNavigator = createAppContainer(
 //     createMaterialTopTabNavigator(
