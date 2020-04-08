@@ -11,7 +11,8 @@ import {
   Text,
   View,
   StyleSheet,
-  Alert
+  Alert,
+  StatusBar,
 } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
@@ -21,6 +22,7 @@ import NavigationUtils from "../Navigator/Navitation.utils";
 import Types from "../../js/actions/types";
 import Actions from "../actions";
 import PopularItem from "../common/PopularItem";
+import NavigationBar from "../common/NavigationBar";
 
 const GITHUB_URL = `https://api.github.com/search/repositories?q=`;
 const SORT_QUERY = "&sort=stars";
@@ -82,7 +84,25 @@ const Popularpage = (props) => {
     })
   );
 
-  return <TabNavigator />;
+  let statusBar = {
+    backgroundColor: "lightblue",
+    barStyle: "light-content",
+  };
+
+
+  let navigationBar = (
+    <NavigationBar
+      title={"最热"}
+      statusBar={statusBar}
+    />
+  );
+
+  return (
+    <View style={{ flex: 1 }}>
+      {navigationBar}
+      <TabNavigator />
+    </View>
+  );
 };
 
 const PropularTab = (props) => {
@@ -91,8 +111,8 @@ const PropularTab = (props) => {
   const popularState = useSelector((state) => state?.popular[tabName]);
   const dispatch = useDispatch();
   // 0: 隐藏footer   1: 正在加载的footer   2: 已经完成加载的footer
-  const [loadingStatus, setLoadingState] = React.useState(2)
-  
+  const [loadingStatus, setLoadingState] = React.useState(2);
+
   const _genUrlName = () => {
     return `${GITHUB_URL}${tabName}${SORT_QUERY}`;
   };
@@ -112,17 +132,16 @@ const PropularTab = (props) => {
 
   const _footerIndicator = () => (
     <View style={styles.footerIndicator}>
-      <ActivityIndicator size="large" color="#0000ff"
-      />
+      <ActivityIndicator size="large" color="#0000ff" />
       <Text>加载更多</Text>
     </View>
-  )
+  );
 
   const _footerComponent = () => (
     <View style={styles.footerIndicator}>
       <Text>没有更多数据了</Text>
     </View>
-  )
+  );
 
   return (
     <View>
@@ -137,19 +156,22 @@ const PropularTab = (props) => {
           onRefresh={() => _onLoading()}
           // 底部组建设计
           ListFooterComponent={() => {
-            if(loadingStatus === 0) return null // 隐藏
-            if(loadingStatus === 1) return _footerIndicator() // 显示正在加载
-            return _footerComponent() // 显示没有更多数据
+            if (loadingStatus === 0) return null; // 隐藏
+            if (loadingStatus === 1) return _footerIndicator(); // 显示正在加载
+            return _footerComponent(); // 显示没有更多数据
           }}
           onEndReached={() => {
             // 确保一定是在Onmomentunscrollbegin之后背带奥用
             setTimeout(() => {
-              console.log('---------- flat list: on end reacher -----------')  
+              console.log("---------- flat list: on end reacher -----------");
             }, 1000);
           }}
           onEndReachedThreshold={0.5}
-          onMomentumScrollBegin= {() => { // 检测用户滑动event
-            console.log('----------- flat list on moment scroll begin -----------')
+          onMomentumScrollBegin={() => {
+            // 检测用户滑动event
+            console.log(
+              "----------- flat list on moment scroll begin -----------"
+            );
           }}
         ></FlatList>
       )}
@@ -159,19 +181,15 @@ const PropularTab = (props) => {
 
 const styles = StyleSheet.create({
   footerIndicator: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign:'center',
-    height: 100
-  }
-})
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    height: 100,
+  },
+});
 
 export default Popularpage;
-
-
-
-
 
 // const TabNavigator = createAppContainer(
 //     createMaterialTopTabNavigator(

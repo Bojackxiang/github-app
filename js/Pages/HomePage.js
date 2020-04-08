@@ -16,10 +16,11 @@ const HomePage = (props) => {
                 screen: PopularPage,
                 navigationOptions: {
                     tabBarLabel: '最热',
+                    header: null,
                     tabBarIcon: ({tintColor, focused}) => (
                         <Ionicons name={'ios-star'} size={26} style={{color: tintColor}} />
-                    )
-                }
+                    ),
+                },
             },
             FavouritePage:{
                 screen: FavouritePage,
@@ -42,7 +43,7 @@ const HomePage = (props) => {
             TrendingPage:{
                 screen: TrendingPage,
                 navigationOptions: {
-                    tabBarLabel: '我看过的',
+                    tabBarLabel: '趋势',
                     tabBarIcon: ({tintColor, focused}) => (
                         <Ionicons name={'ios-heart'} size={26} style={{color: tintColor}} />
                     )
