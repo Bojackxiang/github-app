@@ -127,7 +127,7 @@ const PropularTab = (props) => {
 
   const _renderItem = (data) => {
     const item = data.item;
-    return <PopularItem item={item}></PopularItem>;
+    return <PopularItem item={item} navigation={props.navigation} ></PopularItem>;
   };
 
   const _footerIndicator = () => (

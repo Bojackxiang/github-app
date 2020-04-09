@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, DeviceEventEmitter } from "react-native";
 import CommonModal from "../common/CommonModal";
 
 const TrendingPage = () => {

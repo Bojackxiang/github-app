@@ -1,24 +1,41 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import NavigationUtils from '../Navigator/Navitation.utils'
+
 
 const PopularItem = (props) => {
-  const { item } = props;
+  const { item, navigation } = props;
   if (!item || !item.owner) return null;
 
-  const _onClick = () => {};
+  const _onClick = () => {
 
-  const FavouriteIcon = () => <TouchableOpacity
-    style={{padding: 6}}
-    underlayColor={"transparent"}
-  >
-      <FontAwesome name={'star-o'} size={26} style={{color: 'red'}}>
+  };
 
-      </FontAwesome>
-  </TouchableOpacity>
+  const FavouriteIcon = () => (
+    <TouchableOpacity
+      style={{ padding: 6 }}
+      underlayColor={"transparent"}
+      onPress={() => {
+        console.log('clicked')
+        NavigationUtils.goPage({}, 'DetailPage')
+      }}
+    >
+      <FontAwesome
+        name={"star-o"}
+        size={26}
+        style={{ color: "red" }}
+      ></FontAwesome>
+    </TouchableOpacity>
+  );
 
   return (
-    <TouchableOpacity onPress={() => this.onItemClick()}>
+    <TouchableOpacity
+      onPress={() => {
+        console.log("the item has been clicked");
+        NavigationUtils.goPage({}, 'DetailPage')
+      }}
+    >
       <View style={styles.cell_container}>
         <Text style={styles.title}>{item.full_name}</Text>
         <Text style={styles.description}>{item.description}</Text>
