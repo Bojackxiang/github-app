@@ -26,7 +26,12 @@ const DetailPage = (props) => {
     }
   };
 
-  const _onNavigationChange = (e) => {};
+  const _onNavigationChange = (e) => {
+      console.log(e)
+    //   webView.current.goBack() // 这个网络页面的goback
+    props.navigation.goBack(); // 这个是navigation的go back
+
+  };
 
   console.log('webview page', {html_url})
 
@@ -38,6 +43,7 @@ const DetailPage = (props) => {
         ref={webView}
         // startInLoadingState={true}
         onNavigationStateChange={(e) => _onNavigationChange(e)}
+        
       />
     </View>
   );
