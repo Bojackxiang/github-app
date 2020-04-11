@@ -9,6 +9,7 @@ import DetailPage from "../Pages/DetailPage";
 import FetchDemo from "../Pages/FetchDemo";
 import AsyncStoragePage from "../Pages/AsyncStoragePage";
 import OfflineCache from "../Pages/OfflineCache";
+import AboutPage from "../Pages/AboutPage";
 
 const InitNavigator = createStackNavigator({
   WelcomePage: {
@@ -45,6 +46,12 @@ const MainNavigator = createStackNavigator({
     screen: OfflineCache,
     navigationOptions: {},
   },
+  AboutPage: {
+    screen:AboutPage,
+    navigationOptions: {
+      header: null
+    }
+  }
 }, {
   defaultNavigationOptions: {
       headerShown: false,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar

@@ -12,6 +12,15 @@ import NavigationUtils from '../Navigator/Navitation.utils'
 const HomePage = (props) => {
     const _tabNavigator = () => {
         const bottomNavigator = createBottomTabNavigator({
+            MyPage:{
+                screen: MyPage,
+                navigationOptions: {
+                    tabBarLabel: '我的主页',
+                    tabBarIcon: ({tintColor, focused}) => (
+                        <Ionicons name={'ios-home'} size={26} style={{color: tintColor}} />
+                    )
+                }
+            },
             Popular:{
                 screen: PopularPage,
                 navigationOptions: {
@@ -28,15 +37,6 @@ const HomePage = (props) => {
                     tabBarLabel: '我的收藏',
                     tabBarIcon: ({tintColor, focused}) => (
                         <Ionicons name={'ios-at'} size={26} style={{color: tintColor}} />
-                    )
-                }
-            },
-            MyPage:{
-                screen: MyPage,
-                navigationOptions: {
-                    tabBarLabel: '我的主页',
-                    tabBarIcon: ({tintColor, focused}) => (
-                        <Ionicons name={'ios-home'} size={26} style={{color: tintColor}} />
                     )
                 }
             },
